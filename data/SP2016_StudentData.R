@@ -80,6 +80,38 @@ with(mlb[mlb$awardID=="TSN All-Star",],plot(yearID,salary
                                             
                                             ))
 
+nba.tat<-read.csv(url("https://raw.github.com/fivethirtyeight/data/master/nba-tattoos/nba-tattoos-data.csv"))
+nba.stat<-read.csv(url("https://raw.github.com/PTesta/PS230/master/data/nba2015_16.csv"))
+nba.fouls<-read.csv(url("https://raw.github.com/PTesta/PS230/master/data/nba_fouls.csv"))
+# How many matches
+# Merge Data
+nba<-merge(nba.stat,nba.tat,by.x="Player",by.y="Player.Name",all.x=T)
+
+# If you want other stats...
+nba.stat<-read.csv(url("https://raw.github.com/PTesta/PS230/master/data/nba2015_16.csv"))
+# Get tables from pro football reference
+nfl15<-readHTMLTable("http://www.pro-football-reference.com/years/2015/",stringsAsFactors=F)
+# Create standings
+nfl15$AFC<-nfl15$AFC[!grepl("AFC",nfl15$AFC$Tm),]
+nfl15$NFC<-nfl15$NFC[!grepl("NFC",nfl15$NFC$Tm),]
+# Clean Names
+nfl15$NFC$Tm<-gsub("[[:punct:]]","",nfl15$NFC$Tm)
+nfl15$AFC$Tm<-gsub("[[:punct:]]","",nfl15$AFC$Tm)
+# Create DF
+nfl15.df<-rbind(nfl15$NFC,nfl15$AFC)
+nfl15.df
+
+# Merge Offensive stats
+nfl15.df<-merge(nfl15.df,nfl15$team_stats, by="Tm",all.x=T)
+# Note from pro football that some columns have the same name. You'll have to fix this.
+
+
+
+nfl15$AFC[!grepl("AFC",nfl15$AFC$Tm),]
+
+nfl15o<-readHTMLTable("http://espn.go.com/nfl/statistics/team/_/stat/total",stringsAsFactors = FALSE)[[1]]
+nfl15d<-readHTMLTable("http://espn.go.com/nfl/statistics/team/_/stat/total",stringsAsFactors = FALSE)[[1]]
+
 
 
 
